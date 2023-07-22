@@ -43,18 +43,32 @@ def main():
 
     predictor = Predictor(args, verbose=True)
 
-    image_files = get_all_files(args.input) if os.path.isdir(args.input) else [args.input]
+    # image_files = get_all_files(args.input) if os.path.isdir(args.input) else [args.input]
+    cap = cv2.VideoCapture("/content/drive/MyDrive/res_data/h.mp4")
+    i = 0
+    out = cv2.VideoWriter("/content/drive/MyDrive/res_data/v3.mp4", cv2.VideoWriter_fourcc(*'mp4v'), 30, (1920, 1080))
 
-    for img_p in image_files:
+    while True:
 
-        img = cv2.imread(img_p)
-        detected_objects, out_im = predictor.recognize(img)
+        ret, img = cap.read()
+        i = i + 1
+        if ret:
+            # if i % 100 == 0:
+            if True:
 
-        if args.draw:
-            bname = os.path.splitext(os.path.basename(img_p))[0]
-            filename = os.path.join(args.output, f"out_{bname}.jpg")
-            cv2.imwrite(filename, out_im)
-            _logger.info(f"Saved result to {filename}")
+                detected_objects, out_im = predictor.recognize(img)
+
+                if args.draw:
+                    # bname = os.path.splitext(os.path.basename(img_p))[0]
+                    filename = os.path.join(args.output, f"out_{i}.jpg")
+                    cv2.imwrite(filename, out_im)
+                    print("Output ", out_im.shape)
+                    _logger.info(f"Saved result to {filename}")
+                    # out_im = cv2.resize(out_im, (640,640))
+                    out.write(out_im)
+        else:
+            out.release()
+            break
 
 
 if __name__ == "__main__":
