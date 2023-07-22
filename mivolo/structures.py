@@ -8,11 +8,11 @@ import numpy as np
 import torch
 from mivolo.data.misc import assign_faces, box_iou, cropout_black_parts
 from ultralytics.yolo.engine.results import Results
-from ultralytics.yolo.utils.plotting import Annotator, colors
-
+# from ultralytics.yolo.utils.plotting import Annotator, colors
+from mivolo.yolo_drawing import Annotator, colors
 # because of ultralytics bug it is important to unset CUBLAS_WORKSPACE_CONFIG after the module importing
 os.unsetenv("CUBLAS_WORKSPACE_CONFIG")
-
+# from ultralytics.yolo.utils.plotting import colors
 
 class PersonAndFaceCrops:
     def __init__(self):
@@ -227,21 +227,19 @@ class PersonAndFaceResult:
                 label = (f"{name} {conf:.2f}" if conf else name) if labels else None
                 # label = ("" if conf else name) if labels else None
                 if genders and gender is not None:
-                    label += f" {'F' if gender == 'female' else 'M'}"
+                    label += f" {'Female' if gender == 'female' else 'Male'}"
                 if gender_probs and gender_score is not None:
                     label += f" ({gender_score:.1f})"
                 if ages and age is not None:
                     if age <= 20:
                       age = "1-20"
-                    elif age > 20 and age < 31:
-                      age = "21-30"
-                    elif age > 30 and age < 41:
-                      age = "31-40"
+                    elif age > 20 and age < 36:
+                      age = "21-35"
                     else:
-                      age = "40+"
-                    label += ""
+                      age = "35+"
+                    label += age
 
-                annotator.box_label(d.xyxy.squeeze(), label, color=colors(colors_by_ind[bb_ind], True))
+                annotator.box_label(d.xyxy.squeeze(), label, color=(255,255,255))
 
         if pred_probs is not None and show_probs:
             # text = f"{', '.join(f'{names[j] if names else j} {pred_probs.data[j]:.2f}' for j in pred_probs.top5)}, "
