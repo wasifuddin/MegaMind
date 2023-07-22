@@ -167,7 +167,7 @@ class PersonAndFaceResult:
         self,
         conf=False,
         line_width=None,
-        font_size=None,
+        font_size=0.1,
         font="Arial.ttf",
         pil=False,
         img=None,
@@ -198,12 +198,12 @@ class PersonAndFaceResult:
         colors_by_ind = {}
         for face_ind, person_ind in self.face_to_person_map.items():
             if person_ind is not None:
-                colors_by_ind[face_ind] = face_ind + 2
-                colors_by_ind[person_ind] = face_ind + 2
+                colors_by_ind[face_ind] = face_ind
+                colors_by_ind[person_ind] = face_ind
             else:
                 colors_by_ind[face_ind] = 0
         for person_ind in self.unassigned_persons_inds:
-            colors_by_ind[person_ind] = 1
+            colors_by_ind[person_ind] = 0
 
         names = self.yolo_results.names
         annotator = Annotator(
@@ -223,19 +223,31 @@ class PersonAndFaceResult:
             ):
 
                 c, conf, id = int(d.cls), float(d.conf) if conf else None, None if d.id is None else int(d.id.item())
-                name = ("" if id is None else f"id:{id} ") + names[c]
+                name = ("" if id is None else f"id:{id} ") + ""
                 label = (f"{name} {conf:.2f}" if conf else name) if labels else None
-                if ages and age is not None:
-                    label += f" {age:.1f}"
+                # label = ("" if conf else name) if labels else None
                 if genders and gender is not None:
                     label += f" {'F' if gender == 'female' else 'M'}"
                 if gender_probs and gender_score is not None:
                     label += f" ({gender_score:.1f})"
+                if ages and age is not None:
+                    if age <= 20:
+                      age = "1-20"
+                    elif age > 20 and age < 31:
+                      age = "21-30"
+                    elif age > 30 and age < 41:
+                      age = "31-40"
+                    else:
+                      age = "40+"
+                    label += ""
+
                 annotator.box_label(d.xyxy.squeeze(), label, color=colors(colors_by_ind[bb_ind], True))
 
         if pred_probs is not None and show_probs:
-            text = f"{', '.join(f'{names[j] if names else j} {pred_probs.data[j]:.2f}' for j in pred_probs.top5)}, "
-            annotator.text((32, 32), text, txt_color=(255, 255, 255))  # TODO: allow setting colors
+            # text = f"{', '.join(f'{names[j] if names else j} {pred_probs.data[j]:.2f}' for j in pred_probs.top5)}, "
+            text =""
+            # text = f"{', '.join(f'{names[j] if names else j} {pred_probs.data[j]:.2f}' for j in pred_probs.top5)}, "
+            annotator.text((2, 2), text, txt_color=(255, 255, 255))  # TODO: allow setting colors
 
         return annotator.result()
 
@@ -353,3 +365,4 @@ class PersonAndFaceResult:
         # uncomment to save preprocessed crops
         # crops_data.save()
         return crops_data
+# 0.55 0.7
