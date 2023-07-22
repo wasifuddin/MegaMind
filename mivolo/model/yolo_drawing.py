@@ -14,9 +14,9 @@ from scipy.ndimage import gaussian_filter1d
 
 from ultralytics.yolo.utils import LOGGER, TryExcept, plt_settings, threaded
 
-from .checks import check_font, check_version, is_ascii
-from .files import increment_path
-from .ops import clip_boxes, scale_image, xywh2xyxy, xyxy2xywh
+from ultralytics.yolo.utils.checks import check_font, check_version, is_ascii
+from ultralytics.yolo.utils.files import increment_path
+from ultralytics.yolo.utils.ops import clip_boxes, scale_image, xywh2xyxy, xyxy2xywh
 
 
 class Colors:
@@ -105,8 +105,8 @@ class Annotator:
                 cv2.putText(self.im,
                             label, (p1[0], p1[1] - 2 if outside else p1[1] + h + 2),
                             0,
-                            0.6,
-                            (0,0,0),
+                            0.7,
+                            (0,255,0),
                             thickness=tf,
                             lineType=cv2.LINE_AA)
 
