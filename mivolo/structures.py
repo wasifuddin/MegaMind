@@ -9,7 +9,7 @@ import torch
 from mivolo.data.misc import assign_faces, box_iou, cropout_black_parts
 from ultralytics.yolo.engine.results import Results
 # from ultralytics.yolo.utils.plotting import Annotator, colors
-from mivolo.yolo_drawing import Annotator, colors
+from mivolo.model.yolo_drawing import Annotator, colors
 # because of ultralytics bug it is important to unset CUBLAS_WORKSPACE_CONFIG after the module importing
 os.unsetenv("CUBLAS_WORKSPACE_CONFIG")
 # from ultralytics.yolo.utils.plotting import colors
