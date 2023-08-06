@@ -44,9 +44,9 @@ def main():
     predictor = Predictor(args, verbose=True)
 
     # image_files = get_all_files(args.input) if os.path.isdir(args.input) else [args.input]
-    cap = cv2.VideoCapture("/content/drive/MyDrive/res_data/h.mp4")
+    cap = cv2.VideoCapture("/content/drive/MyDrive/res_data/video_feed.mp4")
     i = 0
-    out = cv2.VideoWriter("/content/drive/MyDrive/res_data/v3.mp4", cv2.VideoWriter_fourcc(*'mp4v'), 30, (1920, 1080))
+    out = cv2.VideoWriter("/content/drive/MyDrive/res_data/result.mp4", cv2.VideoWriter_fourcc(*'mp4v'), 30, (1920, 1080))
 
     while True:
 
