@@ -65,7 +65,7 @@ def main():
                     print("Output ", out_im.shape)
                     _logger.info(f"Saved result to {filename}")
                     # out_im = cv2.resize(out_im, (640,640))
-                    out.write(out_im)
+                    # out.write(out_im)
         else:
             out.release()
             break
